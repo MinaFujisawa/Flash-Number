@@ -7,6 +7,15 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/countDown"
+        tools:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/description1"
@@ -19,6 +28,7 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/btn1"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="40dp"
@@ -26,6 +36,7 @@
             android:textSize="26dp"
             tools:text="0"/>
         <Button
+            android:id="@+id/btn2"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"
@@ -38,12 +49,14 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/btn3"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"
             android:layout_marginRight="40dp"
             tools:text="0"/>
         <Button
+            android:id="@+id/btn4"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"
