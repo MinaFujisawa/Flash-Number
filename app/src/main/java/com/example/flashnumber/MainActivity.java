@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,10 +35,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String btnIndexString = String.valueOf(b);
         int btnIndex = Integer.parseInt(String.valueOf(b).substring(length-2, length-1))-1;
 
-        if (setNumList[btnIndex] == (setNumListOrdered[clicked])) {
+        if(clicked+1 == clickNum){
             b.setText(String.valueOf(setNumListOrdered[clicked]));
+            clickNum++;
         } else {
-            Toast.makeText(MainActivity.this, "Incorrect", Toast.LENGTH_SHORT).show();
+            if (setNumList[btnIndex] == (setNumListOrdered[clicked])) {
+                b.setText(String.valueOf(setNumListOrdered[clicked]));
+            } else {
+                Toast.makeText(MainActivity.this, "Incorrect", Toast.LENGTH_SHORT).show();
+            }
         }
         clicked++;
 
@@ -86,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onFinish() {
                         for (int i = 0; i < clickNum; i++) {
                             btnList.get(i).setText("");
+                            btnList.get(i).setEnabled(true);
                         }
                     }
                 }.start();
