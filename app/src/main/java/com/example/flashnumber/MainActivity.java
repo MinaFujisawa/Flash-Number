@@ -16,12 +16,14 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
-    private int clickNum = 4;
+    private static final int MIN_STAGE = 4;
+    private int stageNum = MIN_STAGE;
     private TextView mCountDownTextView;
+    private TextView mDescriptionTextView;
     private int[] setNumList;
     private int[] setNumListOrdered;
     private ArrayList<Button> btnList;
-    private int clicked = 0;
+    private int countClicked = 0;
     private static final int MAX_NUM = 15;
 
 
@@ -35,17 +37,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int btnIndex = Integer.parseInt(String.valueOf(b).substring(length - 2, length - 1)) - 1;
 
         //check the answers
-        if (clicked + 1 == clickNum) {
-            b.setText(String.valueOf(setNumListOrdered[clicked]));
-            clickNum++;
-            loadActivity();
-        } else {
-            if (setNumList[btnIndex] == (setNumListOrdered[clicked])) {
-                b.setText(String.valueOf(setNumListOrdered[clicked]));
-                clicked++;
+        if (countClicked + 1 != stageNum) {
+            //correct
+            if (setNumList[btnIndex] == (setNumListOrdered[countClicked])) {
+                b.setText(String.valueOf(setNumListOrdered[countClicked]));
+                countClicked++;
+                //incorrect
             } else {
+                for (int j = 0; j < stageNum; j++) {
+                    if (((String) btnList.get(j).getText()).equals("")) {
+                        btnList.get(j).setText(String.valueOf(setNumList[j]));
+                        btnList.get(j).setTextColor(getResources().getColor(R.color.incorrect));
+                    }
+                }
                 Toast.makeText(MainActivity.this, "Incorrect", Toast.LENGTH_SHORT).show();
+
+                // back to the previous stage
+                new CountDownTimer(1000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                    }
+
+                    public void onFinish() {
+                        if(stageNum != MIN_STAGE){
+                            stageNum--;
+                        }
+                        loadActivity();
+                    }
+                }.start();
             }
+            // all correct
+        } else {
+            b.setText(String.valueOf(setNumListOrdered[countClicked]));
+            Toast.makeText(MainActivity.this, "GREAT!", Toast.LENGTH_SHORT).show();
+            stageNum++;
+            new CountDownTimer(500, 1000) {
+                public void onTick(long millisUntilFinished) {
+                }
+
+                public void onFinish() {
+                    loadActivity();
+                }
+            }.start();
         }
         i++;
     }
@@ -59,14 +91,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void loadActivity() {
 
         //switch layouts
-        switch (clickNum) {
+        switch (stageNum) {
             case 4:
                 setContentView(R.layout.num_four);
                 resetItems();
                 break;
             case 5:
                 setContentView(R.layout.num_five);
-                clicked = 0;
+                countClicked = 0;
                 resetItems();
                 break;
         }
@@ -79,11 +111,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnList.add((Button) findViewById(R.id.btn5));
 
 
-
         // add click listeners for the buttons
-        for (int i = 0; i < clickNum; i++) {
+        for (int i = 0; i < stageNum; i++) {
             btnList.get(i).setOnClickListener(this);
         }
+
+        mDescriptionTextView = (TextView) findViewById(R.id.description);
+        mDescriptionTextView.setText(R.string.description1);
 
 
         //Count down
@@ -96,16 +130,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             public void onFinish() {
                 mCountDownTextView.setText("");
-                setNum(clickNum);
+                setNum(stageNum);
                 //invisible number
                 new CountDownTimer(3000, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
 
                     public void onFinish() {
-                        for (int i = 0; i < clickNum; i++) {
+                        for (int i = 0; i < stageNum; i++) {
                             btnList.get(i).setText("");
                             btnList.get(i).setEnabled(true);
+                            mDescriptionTextView.setText(R.string.description2);
                         }
                     }
                 }.start();
@@ -129,11 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Arrays.sort(setNumListOrdered);
 
     }
-    private void resetItems(){
+
+    private void resetItems() {
         btnList = new ArrayList<>();
-        setNumList = new int[clickNum];
-        setNumListOrdered = new int[clickNum];
+        setNumList = new int[stageNum];
+        setNumListOrdered = new int[stageNum];
     }
+
     private View.OnClickListener ReloadActivity = new View.OnClickListener() {
         public void onClick(View v) {
             loadActivity();
