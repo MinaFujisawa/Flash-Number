@@ -16,14 +16,15 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
+    private NumButton numButton;
     private int clickNum = 4;
     private TextView mCountDownTextView;
     private int[] setNumList;
     private int[] setNumListOrdered;
+    private ArrayList<Button> btnList;
     private int clicked = 0;
     private static final int MAX_NUM = 15;
 
-    private ArrayList<Button> btnList;
 
     @Override
     public void onClick(View v) {
@@ -55,12 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         loadActivity();
     }
 
     private void loadActivity() {
-
+        numButton = new NumButton(this);
 
         //switch layouts
         switch (clickNum) {
@@ -72,19 +72,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
-        btnList = new ArrayList<>();
 
-        //add buttons
-        btnList.add((Button) findViewById(R.id.btn1));
-        btnList.add((Button) findViewById(R.id.btn2));
-        btnList.add((Button) findViewById(R.id.btn3));
-        btnList.add((Button) findViewById(R.id.btn4));
-        btnList.add((Button) findViewById(R.id.btn5));
 
-        //create arrays every chang
         setNumList = new int[clickNum];
         setNumListOrdered = new int[clickNum];
 
+        // add click listeners for the buttons
+        for (int i = 0; i < clickNum; i++) {
+            numButton.getBtnList(clickNum).get(i).setOnClickListener(this);
+        }
 
 
         //Count down
@@ -105,18 +101,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     public void onFinish() {
                         for (int i = 0; i < clickNum; i++) {
-                            btnList.get(i).setText("");
-                            btnList.get(i).setEnabled(true);
+                            numButton.getBtnList(clickNum).get(i).setText("");
+                            numButton.getBtnList(clickNum).get(i).setEnabled(true);
                         }
                     }
                 }.start();
             }
         }.start();
 
-        // add click listeners for all buttons
-        for (int i = 0; i < clickNum; i++) {
-            btnList.get(i).setOnClickListener(this);
-        }
+
 
     }
 
@@ -129,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         while (i < clickNum) {
             int p = random.nextInt(MAX_NUM);
             if (num[p] == false) {
-                btnList.get(i).setText(String.valueOf(p));
+                numButton.getBtnList(clickNum).get(i).setText(String.valueOf(p));
                 setNumListOrdered[i] = p;
                 setNumList[i] = p;
                 num[p] = true;
