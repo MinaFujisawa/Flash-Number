@@ -28,6 +28,7 @@
 
         <Button
             android:id="@+id/btn1"
+            android:enabled="false"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="40dp"
@@ -36,6 +37,7 @@
             tools:text="0"/>
         <Button
             android:id="@+id/btn2"
+            android:enabled="false"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"
@@ -44,6 +46,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/btn3"
+        android:enabled="false"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginBottom="40dp"
@@ -56,6 +59,7 @@
 
         <Button
             android:id="@+id/btn4"
+            android:enabled="false"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"
@@ -63,6 +67,7 @@
             tools:text="0"/>
         <Button
             android:id="@+id/btn5"
+            android:enabled="false"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:textSize="26dp"

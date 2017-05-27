@@ -16,25 +16,14 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
-<<<<<<< HEAD
-    private NumButton numButton;
     private int clickNum = 4;
-=======
-    private static final int MAX_NUM = 15;
-    private static final int MIN_CLICK_NUM = 4;
-    private int clickNum = MIN_CLICK_NUM;
->>>>>>> parent of f3f8566... fix btnList.add()
     private TextView mCountDownTextView;
     private int[] setNumList;
     private int[] setNumListOrdered;
     private ArrayList<Button> btnList;
     private int clicked = 0;
+    private static final int MAX_NUM = 15;
 
-<<<<<<< HEAD
-=======
-
-    private ArrayList<Button> btnList = new ArrayList<>();;
->>>>>>> parent of f3f8566... fix btnList.add()
 
     @Override
     public void onClick(View v) {
@@ -43,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //get btn num index
         int length = String.valueOf(b).length();
-        String btnIndexString = String.valueOf(b);
         int btnIndex = Integer.parseInt(String.valueOf(b).substring(length - 2, length - 1)) - 1;
 
         //check the answers
@@ -54,75 +42,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             if (setNumList[btnIndex] == (setNumListOrdered[clicked])) {
                 b.setText(String.valueOf(setNumListOrdered[clicked]));
+                clicked++;
             } else {
                 Toast.makeText(MainActivity.this, "Incorrect", Toast.LENGTH_SHORT).show();
             }
         }
-        clicked++;
-
         i++;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-=======
+        loadActivity();
+    }
+
+    private void loadActivity() {
+
+        //switch layouts
+        switch (clickNum) {
+            case 4:
+                setContentView(R.layout.num_four);
+                resetItems();
+                break;
+            case 5:
+                setContentView(R.layout.num_five);
+                clicked = 0;
+                resetItems();
+                break;
+        }
+
+        //add Buttons
         btnList.add((Button) findViewById(R.id.btn1));
         btnList.add((Button) findViewById(R.id.btn2));
         btnList.add((Button) findViewById(R.id.btn3));
         btnList.add((Button) findViewById(R.id.btn4));
         btnList.add((Button) findViewById(R.id.btn5));
 
-        // add Button to the arrayList
 
->>>>>>> parent of f3f8566... fix btnList.add()
-        loadActivity();
-    }
-
-    private void loadActivity() {
-<<<<<<< HEAD
-        numButton = new NumButton(this);
-=======
-
-        //create arrays every time changed the layout
-        setNumList = new int[clickNum];
-        setNumListOrdered = new int[clickNum];
-
-
-
-        btnList.get(0).setText("HA");
-
-        // add click listeners for the above buttons
-//        for (int i = 0; i < clickNum; i++) {
-//            btnList.get(i).setOnClickListener(this);
-//        }
-
->>>>>>> parent of f3f8566... fix btnList.add()
-
-        //switch layouts
-        switch (clickNum) {
-            case 4:
-                setContentView(R.layout.num_four);
-                break;
-            case 5:
-                setContentView(R.layout.num_five);
-                break;
-        }
-
-<<<<<<< HEAD
-
-
-        setNumList = new int[clickNum];
-        setNumListOrdered = new int[clickNum];
 
         // add click listeners for the buttons
         for (int i = 0; i < clickNum; i++) {
-            numButton.getBtnList(clickNum).get(i).setOnClickListener(this);
+            btnList.get(i).setOnClickListener(this);
         }
 
-=======
->>>>>>> parent of f3f8566... fix btnList.add()
 
         //Count down
         mCountDownTextView = (TextView) findViewById(R.id.countDown);
@@ -136,35 +98,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mCountDownTextView.setText("");
                 setNum(clickNum);
                 //invisible number
-                new CountDownTimer(2000, 1000) {
+                new CountDownTimer(3000, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
 
                     public void onFinish() {
                         for (int i = 0; i < clickNum; i++) {
-                            numButton.getBtnList(clickNum).get(i).setText("");
-                            numButton.getBtnList(clickNum).get(i).setEnabled(true);
+                            btnList.get(i).setText("");
+                            btnList.get(i).setEnabled(true);
                         }
                     }
                 }.start();
             }
         }.start();
-
-
-
     }
 
-
-
-
     public void setNum(int clickNum) {
-<<<<<<< HEAD
         boolean num[] = new boolean[MAX_NUM];
         int i = 0;
         while (i < clickNum) {
             int p = random.nextInt(MAX_NUM);
             if (num[p] == false) {
-                numButton.getBtnList(clickNum).get(i).setText(String.valueOf(p));
+                btnList.get(i).setText(String.valueOf(p));
                 setNumListOrdered[i] = p;
                 setNumList[i] = p;
                 num[p] = true;
@@ -173,23 +128,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         Arrays.sort(setNumListOrdered);
 
-=======
-//        boolean num[] = new boolean[MAX_NUM];
-//        int i = 0;
-//        while (i < clickNum) {
-//            int p = random.nextInt(MAX_NUM);
-//            if (num[p] == false) {
-//                btnList.get(i).setText(String.valueOf(p));
-//                setNumListOrdered[i] = p;
-//                setNumList[i] = p;
-//                num[p] = true;
-//                i++;
-//            }
-//        }
-//        Arrays.sort(setNumListOrdered);
->>>>>>> parent of f3f8566... fix btnList.add()
     }
-
+    private void resetItems(){
+        btnList = new ArrayList<>();
+        setNumList = new int[clickNum];
+        setNumListOrdered = new int[clickNum];
+    }
     private View.OnClickListener ReloadActivity = new View.OnClickListener() {
         public void onClick(View v) {
             loadActivity();
