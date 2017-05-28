@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // add click listeners for the buttons
         for (int i = 0; i < stageNum; i++) {
             btnList.get(i).setOnClickListener(this);
+            btnList.get(i).setEnabled(false);
         }
 
         mDescriptionTextView = (TextView) findViewById(R.id.description);
@@ -140,7 +141,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         for (int i = 0; i < stageNum; i++) {
                             btnList.get(i).setText("");
                             btnList.get(i).setEnabled(true);
+                            btnList.get(i).setBackgroundResource(R.drawable.clicable_buttton_bg);
+                            btnList.get(i).setWidth(55);
+                            btnList.get(i).setHeight(55);
+                            btnList.get(i).setTextSize(45);
                             mDescriptionTextView.setText(R.string.description2);
+
                         }
                     }
                 }.start();
@@ -158,6 +164,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setNumListOrdered[i] = p;
                 setNumList[i] = p;
                 num[p] = true;
+
+                //style
+                btnList.get(i).setBackground(null);
+                btnList.get(i).setWidth(80);
+                btnList.get(i).setHeight(80);
+                btnList.get(i).setTextSize(50);
+
                 i++;
             }
         }

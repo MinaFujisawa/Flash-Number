@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="my_button_style">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:textSize">45dp</item>
+        <item name="android:background">@drawable/clicable_buttton_bg</item>
+        <item name="android:enabled">true</item>
+    </style>
+</resources>
