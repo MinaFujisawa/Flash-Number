@@ -14,4 +14,24 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <!-- Numbers theme. -->
+    <style name="NumbersTheme" parent="@android:style/Theme.Light">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:textSize">50dp</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <!-- Buttons theme. -->
+    <style name="ButtonssTheme" parent="@android:style/Theme.Light">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:textSize">45dp</item>
+        <item name="android:background">@drawable/clicable_buttton_bg</item>
+        <item name="android:enabled">true</item>
+    </style>
+
 </resources>

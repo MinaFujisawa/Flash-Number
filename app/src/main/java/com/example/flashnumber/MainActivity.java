@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //correct
             if (setNumList[btnIndex] == (setNumListOrdered[countClicked])) {
                 b.setText(String.valueOf(setNumListOrdered[countClicked]));
+                setNumbersStyle(btnIndex);
                 countClicked++;
                 //incorrect
             } else {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     public void onFinish() {
-                        if(stageNum != MIN_STAGE){
+                        if (stageNum != MIN_STAGE) {
                             stageNum--;
                         }
                         loadActivity();
@@ -176,16 +176,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 num[p] = true;
 
                 //style
-                btnList.get(i).setBackground(null);
-                btnList.get(i).setWidth(80);
-                btnList.get(i).setHeight(80);
-                btnList.get(i).setTextSize(50);
-
+                setNumbersStyle(i);
                 i++;
             }
         }
         Arrays.sort(setNumListOrdered);
     }
+
     public void showImage(boolean isCorrect) {
 
         // ダイアログの背景を完全に透過。
@@ -196,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.my_dialog
                 , null));
         ImageView imageView = (ImageView) settingsDialog.findViewById(R.id.dialogIcon);
-        if(isCorrect){
+        if (isCorrect) {
             imageView.setImageResource(R.drawable.correct);
         } else {
             imageView.setImageResource(R.drawable.incorrect);
@@ -209,9 +206,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setNumList = new int[stageNum];
         setNumListOrdered = new int[stageNum];
         countClicked = 0;
-        if(settingsDialog != null){
+        if (settingsDialog != null) {
             settingsDialog.dismiss();
         }
     }
 
+    private void setNumbersStyle(int i) {
+        btnList.get(i).setBackground(null);
+        btnList.get(i).setWidth(80);
+        btnList.get(i).setHeight(80);
+        btnList.get(i).setTextSize(50);
+    }
 }
