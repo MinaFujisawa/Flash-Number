@@ -1,12 +1,20 @@
 package com.example.flashnumber;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,14 +25,15 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
     private static final int MIN_STAGE = 4;
+    private static final int MAX_NUM = 15;
     private int stageNum = MIN_STAGE;
     private TextView mCountDownTextView;
     private TextView mDescriptionTextView;
     private int[] setNumList;
     private int[] setNumListOrdered;
     private ArrayList<Button> btnList;
-    private int countClicked = 0;
-    private static final int MAX_NUM = 15;
+    private int countClicked;
+    Dialog settingsDialog;
 
 
     @Override
@@ -44,13 +53,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 countClicked++;
                 //incorrect
             } else {
+                showImage(false);
                 for (int j = 0; j < stageNum; j++) {
                     if (((String) btnList.get(j).getText()).equals("")) {
                         btnList.get(j).setText(String.valueOf(setNumList[j]));
                         btnList.get(j).setTextColor(getResources().getColor(R.color.incorrect));
                     }
                 }
-                Toast.makeText(MainActivity.this, "Incorrect", Toast.LENGTH_SHORT).show();
 
                 // back to the previous stage
                 new CountDownTimer(1000, 1000) {
@@ -67,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             // all correct
         } else {
+            showImage(true);
             b.setText(String.valueOf(setNumListOrdered[countClicked]));
-            Toast.makeText(MainActivity.this, "GREAT!", Toast.LENGTH_SHORT).show();
             stageNum++;
             new CountDownTimer(500, 1000) {
                 public void onTick(long millisUntilFinished) {
@@ -98,10 +107,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 5:
                 setContentView(R.layout.num_five);
-                countClicked = 0;
                 resetItems();
                 break;
         }
+
+        settingsDialog = new Dialog(this, R.style.TransparentDialogTheme);
 
         //add Buttons
         btnList.add((Button) findViewById(R.id.btn1));
@@ -175,20 +185,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         Arrays.sort(setNumListOrdered);
+    }
+    public void showImage(boolean isCorrect) {
 
+        // ダイアログの背景を完全に透過。
+        settingsDialog.getWindow().setBackgroundDrawable(
+                new ColorDrawable(Color.TRANSPARENT));
+
+        settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.my_dialog
+                , null));
+        ImageView imageView = (ImageView) settingsDialog.findViewById(R.id.dialogIcon);
+        if(isCorrect){
+            imageView.setImageResource(R.drawable.correct);
+        } else {
+            imageView.setImageResource(R.drawable.incorrect);
+        }
+        settingsDialog.show();
     }
 
     private void resetItems() {
         btnList = new ArrayList<>();
         setNumList = new int[stageNum];
         setNumListOrdered = new int[stageNum];
-    }
-
-    private View.OnClickListener ReloadActivity = new View.OnClickListener() {
-        public void onClick(View v) {
-            loadActivity();
+        countClicked = 0;
+        if(settingsDialog != null){
+            settingsDialog.dismiss();
         }
-    };
-
+    }
 
 }
