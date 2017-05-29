@@ -121,6 +121,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setContentView(R.layout.num_five);
                 resetItems();
                 break;
+            case 6:
+                setContentView(R.layout.num_six);
+                resetItems();
+                break;
         }
 
         settingsDialog = new Dialog(this, R.style.TransparentDialogTheme);
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnList.add((Button) findViewById(R.id.btn3));
         btnList.add((Button) findViewById(R.id.btn4));
         btnList.add((Button) findViewById(R.id.btn5));
+        btnList.add((Button) findViewById(R.id.btn6));
 
 
         // add click listeners for the buttons
@@ -154,19 +159,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onFinish() {
                 mCountDownTextView.setText("");
                 setNum(stageNum);
-                //invisible number
-                new CountDownTimer(3000, 1000) {
+                //visible number
+                new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
-
+                    //invisible number
                     public void onFinish() {
                         for (int i = 0; i < stageNum; i++) {
-                            btnList.get(i).setText("");
-                            btnList.get(i).setEnabled(true);
-                            btnList.get(i).setBackgroundResource(R.drawable.clicable_buttton_bg);
-                            btnList.get(i).setWidth(55);
-                            btnList.get(i).setHeight(55);
-                            btnList.get(i).setTextSize(45);
+                            setButtonStyle(i);
                             mDescriptionTextView.setText(R.string.description2);
 
                         }
@@ -229,6 +229,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        btnList.get(i).setTextSize(50);
     }
 
+    private void setButtonStyle(int i){
+        btnList.get(i).setText("");
+        btnList.get(i).setEnabled(true);
+        btnList.get(i).setBackgroundResource(R.drawable.clicable_buttton_bg);
+        btnList.get(i).setWidth(55);
+        btnList.get(i).setHeight(55);
+        btnList.get(i).setTextSize(45);
+    }
+
     private void addScore(int stageNum){
         switch (stageNum){
             case 4:
@@ -236,6 +245,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 5:
                 score += 2;
+                break;
+            case 6:
+                score += 4;
                 break;
         }
     }
