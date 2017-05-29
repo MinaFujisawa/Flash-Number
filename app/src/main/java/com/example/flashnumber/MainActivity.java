@@ -24,7 +24,10 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
     private static final int MIN_STAGE = 4;
+    private static final int MAX_INCORRECT = 2;
     private static final int MAX_NUM = 15;
+
+    private static final String KEY_SCORE = "flashnumber_score";
     private int stageNum = MIN_STAGE;
     private TextView mCountDownTextView;
     private TextView mDescriptionTextView;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int[] setNumListOrdered;
     private ArrayList<Button> btnList;
     private int countClicked;
+    private int score;
+    private int countIncorrect;
     Dialog settingsDialog;
 
 
@@ -43,17 +48,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //get btn num index
         int length = String.valueOf(b).length();
         int btnIndex = Integer.parseInt(String.valueOf(b).substring(length - 2, length - 1)) - 1;
-
+        btnList.get(btnIndex).setEnabled(false);
+        setNumbersStyle(btnIndex);
         //check the answers
         if (countClicked + 1 != stageNum) {
             //correct
             if (setNumList[btnIndex] == (setNumListOrdered[countClicked])) {
                 b.setText(String.valueOf(setNumListOrdered[countClicked]));
-                setNumbersStyle(btnIndex);
                 countClicked++;
                 //incorrect
             } else {
                 showImage(false);
+                countIncorrect++;
+                if(countIncorrect >= MAX_INCORRECT){
+                    Intent intent = new Intent(getApplication(), ResultActivity.class);
+                    intent.putExtra(KEY_SCORE, score);
+                    startActivity(intent);
+                }
                 for (int j = 0; j < stageNum; j++) {
                     if (((String) btnList.get(j).getText()).equals("")) {
                         btnList.get(j).setText(String.valueOf(setNumList[j]));
@@ -62,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 // back to the previous stage
-                new CountDownTimer(1000, 1000) {
+                new CountDownTimer(1500, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
 
@@ -78,8 +89,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             showImage(true);
             b.setText(String.valueOf(setNumListOrdered[countClicked]));
+            addScore(stageNum);
             stageNum++;
-            new CountDownTimer(500, 1000) {
+            new CountDownTimer(1000, 1000) {
                 public void onTick(long millisUntilFinished) {
                 }
 
@@ -185,7 +197,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void showImage(boolean isCorrect) {
 
-        // ダイアログの背景を完全に透過。
         settingsDialog.getWindow().setBackgroundDrawable(
                 new ColorDrawable(Color.TRANSPARENT));
 
@@ -213,8 +224,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setNumbersStyle(int i) {
         btnList.get(i).setBackground(null);
-        btnList.get(i).setWidth(80);
-        btnList.get(i).setHeight(80);
-        btnList.get(i).setTextSize(50);
+//        btnList.get(i).setWidth(80);
+//        btnList.get(i).setHeight(80);
+//        btnList.get(i).setTextSize(50);
+    }
+
+    private void addScore(int stageNum){
+        switch (stageNum){
+            case 4:
+                score += 1;
+                break;
+            case 5:
+                score += 2;
+                break;
+        }
     }
 }

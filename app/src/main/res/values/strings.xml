@@ -4,4 +4,7 @@
     <string name="description1">Remeber following numbers</string>
     <string name="description2">Tap numbers in ascending order</string>
     <string name="score">Score</string>
+    <string name="resultHeading">RESULT</string>
+    <string name="points">points</string>
+    <string name="btn_retry">RETRY</string>
 </resources>
