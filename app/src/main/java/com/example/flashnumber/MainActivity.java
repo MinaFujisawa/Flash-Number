@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int MIN_STAGE = 4;
     private static final int MAX_STAGE = 10;
     private static final int MAX_INCORRECT = 2;
-    private static final int MAX_NUM = 15;
+    private static final int MAX_NUM = 10;
 
     private static final String KEY_SCORE = "flashnumber_score";
     private int stageNum = MIN_STAGE;
@@ -60,11 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 showImage(false);
                 countIncorrect++;
-                if (countIncorrect >= MAX_INCORRECT) {
-                    Intent intent = new Intent(getApplication(), ResultActivity.class);
-                    intent.putExtra(KEY_SCORE, score);
-                    startActivity(intent);
-                }
+
+                // display the rest of the answers
                 for (int j = 0; j < stageNum; j++) {
                     if (((String) btnList.get(j).getText()).equals("")) {
                         btnList.get(j).setText(String.valueOf(setNumList[j]));
@@ -72,18 +69,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
 
-                // back to the previous stage
-                new CountDownTimer(1500, 1000) {
-                    public void onTick(long millisUntilFinished) {
-                    }
-
-                    public void onFinish() {
-                        if (stageNum != MIN_STAGE) {
-                            stageNum--;
+                // go to the result page
+                if (countIncorrect >= MAX_INCORRECT) {
+                    new CountDownTimer(2000, 1000) {
+                        public void onTick(long millisUntilFinished) {
                         }
-                        loadActivity();
+
+                        public void onFinish() {
+                            Intent intent = new Intent(getApplication(), ResultActivity.class);
+                            intent.putExtra(KEY_SCORE, score);
+                            startActivity(intent);
+                        }
+                    }.start();
+                    // back to the previous stage
+                } else {
+                    if (stageNum != MIN_STAGE) {
+                        stageNum--;
                     }
-                }.start();
+                    new CountDownTimer(1000, 1000) {
+                        public void onTick(long millisUntilFinished) {
+                        }
+
+                        public void onFinish() {
+                            loadActivity();
+                        }
+                    }.start();
+                }
             }
             // all correct
         } else {
@@ -201,10 +212,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setNum(int clickNum) {
-        boolean num[] = new boolean[MAX_NUM];
+        boolean num[] = new boolean[MAX_NUM + 1];
         int i = 0;
         while (i < clickNum) {
-            int p = random.nextInt(MAX_NUM);
+            int p = random.nextInt(MAX_NUM) + 1;
             if (num[p] == false) {
                 btnList.get(i).setText(String.valueOf(p));
                 setNumListOrdered[i] = p;
