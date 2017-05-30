@@ -24,6 +24,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Random random = new Random();
     private static final int MIN_STAGE = 4;
+    private static final int MAX_STAGE = 10;
     private static final int MAX_INCORRECT = 2;
     private static final int MAX_NUM = 15;
 
@@ -46,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int i = 0;
 
         //get btn num index
-        int length = String.valueOf(b).length();
-        int btnIndex = Integer.parseInt(String.valueOf(b).substring(length - 2, length - 1)) - 1;
+        int btnIndex = getButtonIndex(b);
         btnList.get(btnIndex).setEnabled(false);
         setNumbersStyle(btnIndex);
         //check the answers
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 showImage(false);
                 countIncorrect++;
-                if(countIncorrect >= MAX_INCORRECT){
+                if (countIncorrect >= MAX_INCORRECT) {
                     Intent intent = new Intent(getApplication(), ResultActivity.class);
                     intent.putExtra(KEY_SCORE, score);
                     startActivity(intent);
@@ -90,7 +90,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             showImage(true);
             b.setText(String.valueOf(setNumListOrdered[countClicked]));
             addScore(stageNum);
-            stageNum++;
+            if (stageNum != MAX_STAGE) {
+                stageNum++;
+            }
+
             new CountDownTimer(1000, 1000) {
                 public void onTick(long millisUntilFinished) {
                 }
@@ -125,6 +128,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setContentView(R.layout.num_six);
                 resetItems();
                 break;
+            case 7:
+                setContentView(R.layout.num_seven);
+                resetItems();
+                break;
+            case 8:
+                setContentView(R.layout.num_eight);
+                resetItems();
+                break;
+            case 9:
+                setContentView(R.layout.num_nine);
+                resetItems();
+                break;
+            case 10:
+                setContentView(R.layout.num_ten);
+                resetItems();
+                break;
         }
 
         settingsDialog = new Dialog(this, R.style.TransparentDialogTheme);
@@ -136,6 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnList.add((Button) findViewById(R.id.btn4));
         btnList.add((Button) findViewById(R.id.btn5));
         btnList.add((Button) findViewById(R.id.btn6));
+        btnList.add((Button) findViewById(R.id.btn7));
+        btnList.add((Button) findViewById(R.id.btn8));
+        btnList.add((Button) findViewById(R.id.btn9));
+        btnList.add((Button) findViewById(R.id.btn10));
 
 
         // add click listeners for the buttons
@@ -163,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new CountDownTimer(2000, 1000) {
                     public void onTick(long millisUntilFinished) {
                     }
+
                     //invisible number
                     public void onFinish() {
                         for (int i = 0; i < stageNum; i++) {
@@ -186,8 +210,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setNumListOrdered[i] = p;
                 setNumList[i] = p;
                 num[p] = true;
-
-                //style
                 setNumbersStyle(i);
                 i++;
             }
@@ -229,7 +251,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        btnList.get(i).setTextSize(50);
     }
 
-    private void setButtonStyle(int i){
+    private void setButtonStyle(int i) {
         btnList.get(i).setText("");
         btnList.get(i).setEnabled(true);
         btnList.get(i).setBackgroundResource(R.drawable.clicable_buttton_bg);
@@ -238,8 +260,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnList.get(i).setTextSize(45);
     }
 
-    private void addScore(int stageNum){
-        switch (stageNum){
+    private void addScore(int stageNum) {
+        switch (stageNum) {
             case 4:
                 score += 1;
                 break;
@@ -249,6 +271,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 6:
                 score += 4;
                 break;
+            case 7:
+                score += 8;
+                break;
+            case 8:
+                score += 16;
+                break;
+            case 9:
+                score += 32;
+                break;
+            case 10:
+                score += 64;
+                break;
         }
+    }
+
+    private int getButtonIndex(Button b) {
+        int length = String.valueOf(b).length();
+        String substring = String.valueOf(b).substring(length - 3, length);
+        return Integer.parseInt(substring.replaceAll("[^0-9]", "")) - 1;
     }
 }

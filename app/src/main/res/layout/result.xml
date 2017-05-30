@@ -27,14 +27,13 @@
             android:layout_height="wrap_content"
             android:textSize="50dp"
             android:textColor="@color/black"
-
             tools:text="999" />
 
         <TextView
             android:text="@string/points"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:textColor="@color/black"
             android:textSize="30dp" />
     </LinearLayout>
@@ -43,9 +42,9 @@
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="80dp"
         android:padding="20dp"
         android:text="@string/btn_retry"
-        android:textSize="30dp" />
+        android:textSize="24dp" />
 
 </LinearLayout>
