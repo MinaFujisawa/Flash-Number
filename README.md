@@ -2,7 +2,7 @@
 The one of the brain training games from the video game console called Brain Age by Nintendo.
 
 # Rule
-Numbers appear in boxes for a short period of time.  Afterwards, you must touch the boxes on the touch screen from lowest number to highest by memorizing the numbers.
+Numbers appear in boxes for a short period of time.  Afterwards, you must touch the boxes from lowest number to highest by memorizing the numbers.
 
 If you select a wrong number twice, you lose.
 
